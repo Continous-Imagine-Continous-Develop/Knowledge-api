@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,14 +43,9 @@ INSTALLED_APPS = [
     ## apps
    'scrap.apps.ScrapConfig',
 
-    
-    # allauth
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    ## oauth
+    'social_django',
 
-    # provider
-    'allauth.socialaccount.providers.google'
 ]
 
 MIDDLEWARE = [
@@ -67,7 +63,7 @@ ROOT_URLCONF = 'knowledge.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(os.path.dirname(__file__), './/', 'templates').replace('\\', '/')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -145,7 +141,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend'
+    'social_core.backends.google.GoogleOAuth2',
+    
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -162,5 +159,10 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 SITE_ID = 1
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/auth/login/google-oauth2/'
+LOGIN_REDIRECT_URL = '/oauth'
+LOGOUT_REDIRECT_URL = '/oauth'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '691870055927-mtjg7nvo0336fu52v6j98mprbjo5cuq6.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'AhfYK-CtrFAjNmcx_7ukeskh'
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
