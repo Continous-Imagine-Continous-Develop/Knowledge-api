@@ -2,7 +2,8 @@ from django.shortcuts import render
 
 # Create your views here.
 def logout(request):
-    return 'logout success'
+    request.user = None
+    return render(request, 'oauth/index.html')
 
 def index(request):
     context = {}
